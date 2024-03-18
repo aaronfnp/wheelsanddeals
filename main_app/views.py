@@ -44,3 +44,12 @@ def add_photo(request, car_id):
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('detail', car_id=car_id)
+
+def add_listing(request):
+    return render(request, 'add_listing.html')
+
+def car_market(request):
+    return render(request, 'car_market.html')
+
+def my_garage(request):
+    return render(request, 'my_garage.html')
