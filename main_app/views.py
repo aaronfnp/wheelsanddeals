@@ -47,6 +47,7 @@ def add_photo(request, car_id):
             print(e)
     return redirect('detail', car_id=car_id)
 
+
 # CARS CREATE AND UPDATE NEED TO REMOVE USER AND AUTO ADD
 
 class CarCreate(CreateView):
@@ -62,3 +63,13 @@ class CarUpdate(UpdateView):
 class CarDelete(DeleteView):
     model = Car
     success_url = '/cars'
+
+def add_listing(request):
+    return render(request, 'add_listing.html')
+
+def car_market(request):
+    return render(request, 'car_market.html')
+
+def my_garage(request):
+    return render(request, 'my_garage.html')
+
