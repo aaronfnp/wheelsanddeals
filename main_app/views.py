@@ -23,7 +23,9 @@ def cars_index(request):
 
 def cars_detail(request, car_id):
   car = Car.objects.get(id=car_id)
-  return redirect('detail', car_id=car_id)
+  return render(request, 'cars/detail.html', {
+    'car': car
+  })
 
 def add_photo(request, car_id):
     # photo-file will be the "name" attribute on the <input type="file">
@@ -45,6 +47,23 @@ def add_photo(request, car_id):
             print(e)
     return redirect('detail', car_id=car_id)
 
+
+# CARS CREATE AND UPDATE NEED TO REMOVE USER AND AUTO ADD
+
+class CarCreate(CreateView):
+    model = Car
+    fields = '__all__'
+    success_url = '/cars'
+
+class CarUpdate(UpdateView):
+    model = Car
+    fields = '__all__'
+    # ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'date_listed', 'color', 'price', 'category']
+
+class CarDelete(DeleteView):
+    model = Car
+    success_url = '/cars'
+
 def add_listing(request):
     return render(request, 'add_listing.html')
 
@@ -53,3 +72,4 @@ def car_market(request):
 
 def my_garage(request):
     return render(request, 'my_garage.html')
+
