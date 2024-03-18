@@ -4,7 +4,7 @@ import os
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Car, Photo
+from .models import Car, Photo, Profile
 
 # Define the home view
 def home(request):
@@ -73,3 +73,8 @@ def car_market(request):
 def my_garage(request):
     return render(request, 'my_garage.html')
 
+def add_to_favorites(request, car_id):
+    car = Car.objects.get(id=car_id)
+    profile = Profile.objects.get(user=request.user)
+    profile.favorite_cars.add(car)
+    return redirect('index', car_id=car_id)

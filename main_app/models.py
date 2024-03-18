@@ -30,3 +30,10 @@ class Photo(models.Model):
 
     def __str__(self):
         return f"Photo for car_id: {self.car_id} @{self.url}"
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    favorite_cars = models.ManyToManyField(Car)
+    
+    def __str__(self):
+        return self.user.username
