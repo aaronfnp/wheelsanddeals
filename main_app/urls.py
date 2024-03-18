@@ -14,4 +14,5 @@ urlpatterns = [
     path('add_listing/', views.add_listing, name='add_listing'),
     path('car_market/', views.car_market, name='car_market'),
     path('my_garage/', views.my_garage, name='my_garage'),
+    path('cars/<int:car_id>/add_to_favorites/', views.add_to_favorites, name='add_to_favorites'),
 ]
