@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,6 +8,34 @@
     <title>Wheels and Deals</title>
   </head>
   <body>
+    <header class="navbar-fixed">
+      <nav>
+          <div class="nav-wrapper">
+              <ul>
+                  <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Wheel and Deal</a></li>
+              </ul>
+              <ul class="right">
+                <li><a href="{% url 'about' %}">About</a></li>
+                {% if user.is_authenticated %}
+                  <li><a href="">Add Listing</a></li>
+                  <li><a href="{% url 'index' %}">All Listings</a></li>
+                  <li>
+                    <a href="#">
+                      <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="submit-link">Log Out</button>
+                      </form>
+                    </a>
+                  </li>
+                {% else %}
+                  <li><a href="{% url 'login' %}">Log In</a></li>
+                {% endif %}
+              </ul>
+          </div>
+      </nav>
+  </header>
+    {% block content %}
     <h1>BASE</h1>
+    {% endblock %}
   </body>
 </html>
