@@ -5,7 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Car, Photo, Profile
+from .models import Car, Photo, Profile, Review
+from django import forms
+from .forms import ReviewForm
 
 # Define the home view
 def home(request):
@@ -48,6 +50,16 @@ def add_photo(request, car_id):
             print(e)
     return redirect('detail', car_id=car_id)
 
+def add_review(request, profile_id):
+    form = ReviewForm(request.POST)
+    # all user_id will probably be profile id
+    if form.is_valid():
+        new_review = form.save(commit=False)
+        new_review.user_receiver = profile_id
+        new_review.user_sender = request.user
+        new_review.save()
+    # must return to user prof
+    return redirect('detail', profile_id=profile_id)
 
 # CARS CREATE AND UPDATE NEED TO REMOVE USER AND AUTO ADD
 
