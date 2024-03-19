@@ -35,7 +35,7 @@ class Photo(models.Model):
     
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    favorite_cars = models.ManyToManyField(Car)
+    favorite_cars = models.ManyToManyField(Car, blank=True)
     
     def __str__(self):
         return self.user.username

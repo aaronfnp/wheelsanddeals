@@ -76,7 +76,16 @@ def car_market(request):
     return render(request, 'car_market.html')
 
 def my_garage(request):
-    return render(request, 'my_garage.html')
+    user = request.user
+    active_listings = Car.objects.filter(published_by=user)
+    sold_history = Car.objects.filter(published_by=user)
+    profile = Profile.objects.get(user=user)
+    favorite_cars = profile.favorite_cars.all()
+    return render(request, 'my_garage.html', {
+        'active_listings': active_listings,
+        'sold_history': sold_history,
+        'favorite_cars': favorite_cars,
+    })
 
 def add_to_favorites(request, car_id):
     car = Car.objects.get(id=car_id)
