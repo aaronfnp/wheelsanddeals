@@ -1,6 +1,7 @@
 import uuid
 import boto3
 import os
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
@@ -50,16 +51,20 @@ def add_photo(request, car_id):
 
 # CARS CREATE AND UPDATE NEED TO REMOVE USER AND AUTO ADD
 
-class CarCreate(CreateView):
+class CarCreate(LoginRequiredMixin, CreateView):
     model = Car
-    fields = '__all__'
+    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'date_listed', 'color', 'price', 'category']
     success_url = '/cars'
+
+    def form_valid(self, form):
+        form.instance.published_by = self.request.user
+        return super().form_valid(form)
 
 class CarUpdate(UpdateView):
     model = Car
-    fields = '__all__'
-    # ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'date_listed', 'color', 'price', 'category']
-
+    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'date_listed', 'color', 'price', 'category']
+    success_url = '/cars'
+    
 class CarDelete(DeleteView):
     model = Car
     success_url = '/cars'

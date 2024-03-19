@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from datetime import date
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 # Create your models here.
 
@@ -37,3 +39,17 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+class Review(models.Model):
+    # should grab current logged in user
+    user_sender = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sent_reviews')
+    # should grab current user profile
+    user_receiver = models.OneToOneField(User, on_delete=models.CASCADE, related_name='received_reviews')
+    content = models.CharField(max_length=100)
+    rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+
+    def __str__(self):
+        return f'{self.content})'
+    
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'review_id': self.id})
