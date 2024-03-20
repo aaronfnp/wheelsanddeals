@@ -1,13 +1,25 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
-<h1>Car List</h1>
+{% block content %}
 
-{% for car in cars %}
-<div class="card">
-  <a href="{% url 'detail' car.id %}">
-    <div class="card-content">
-      <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
-    </a>
-    </div>
-</div>
-{% endfor %} {% endblock %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Listings</title>
+  </head>
+  <body>
+    <h1>Car Listings</h1>
+    {% for category, cars in car_by_category %}
+      <h2>{{ category }}</h2>
+      <ul>
+        {% for car in cars %}
+          <li>
+            <a href="{% url 'detail' car.id %}">{{ car.year }} {{ car.make }} {{ car.model }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  </body>
+</html>
+
+{% endblock %}

@@ -11,7 +11,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  </head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
   <body>
     <header class="navbar-fixed">
       <nav>
@@ -27,7 +28,7 @@
             <li><a href="{% url 'about' %}">About</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'cars_create' %}">add listing</a></li>
-            <li><a href="{% url 'index' %}">car market</a></li>
+            <li><a href="{% url 'car_list' %}">car market</a></li>
             <li><a href="/my_garage">my garage</a></li>
             <li>
               <a href="#">
