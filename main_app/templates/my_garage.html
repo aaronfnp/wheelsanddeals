@@ -1,73 +1,105 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div>
+  <div>
     <div>
-        <div>
-            <h4>Active Listings</h4>
-        </div>
-        <div>
-            {% if active_listings %}
-                <div>
-                    {% for car in active_listings %}
-                        <div>
-                            <div class="card">
-                                <div class="card-content">
-                                    <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>No Active Listings</p>
-            {% endif %}
-        </div>
+      <h4>Active Listings</h4>
     </div>
     <div>
+      {% if active_listings %}
+      <div>
+        {% for car in active_listings %}
         <div>
-            <h4>Sold Vehicles</h4>
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title"
+                >{{ car.year }} {{ car.make }} {{ car.model }}</span
+              >
+            </div>
+          </div>
         </div>
-        <div>
-            {% if sold_history %}
-                <div>
-                    {% for car in sold_history %}
-                        <div>
-                            <div class="card">
-                                <div class="card-content">
-                                    <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>No Vehicles Sold Yet</p>
-            {% endif %}
-        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No Active Listings</p>
+      {% endif %}
+    </div>
+  </div>
+  <div>
+    <div>
+      <h4>Sold Vehicles</h4>
     </div>
     <div>
+      {% if sold_history %}
+      <div>
+        {% for car in sold_history %}
         <div>
-            <h4>Favorite Cars</h4>
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title"
+                >{{ car.year }} {{ car.make }} {{ car.model }}</span
+              >
+            </div>
+          </div>
         </div>
-        <div>
-            {% if favorite_cars %}
-                <div>
-                    {% for car in favorite_cars %}
-                        <div>
-                            <div class="card">
-                                <div class="card-content">
-                                    <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>No Favorites Added</p>
-            {% endif %}
-        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No Vehicles Sold Yet</p>
+      {% endif %}
     </div>
-</div>
+  </div>
+  <div>
+    <div>
+      <h4>Favorite Cars</h4>
+    </div>
+    <div>
+      {% if favorite_cars %}
+      <div>
+        {% for car in favorite_cars %}
+        <div>
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title"
+                >{{ car.year }} {{ car.make }} {{ car.model }}</span
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No Favorites Added</p>
+      {% endif %}
+    </div>
+    <div>
+      <div>
+        <h4>Reviews</h4>
+      </div>
+      <div>
+        {% if reviews %}
+        <div>
+          {% for review in reviews %}
+          <div>
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">
+                  Rating: {{ review.rating }} / 5
+                  <br />Review: {{ review.content }} <br />By:
+                  {{review.user_sender }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p>No Reviews Added</p>
+        {% endif %}
+      </div>
+      <a href="{% url 'reviews_create' %}">Add Review</a>
+    </div>
+  </div>
 
-{% endblock %}
+  {% endblock %}
+</div>
