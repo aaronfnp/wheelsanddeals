@@ -1,9 +1,56 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
-<h1>Wheels and Deals</h1>
-<hr>
-<p>Buy A Car Now</p>
+<h2>Welcome to Wheels and Deals</h2>
+<p>
+  Your premier destination for seamless car buying
+  and selling experiences! At Wheels and Deals, we pride ourselves on providing
+  a hassle-free platform that connects car enthusiasts, seasoned buyers, and
+  sellers alike. Whether you're in search of your dream car or looking to part
+  ways with your current vehicle, Wheels and Deals is here to make the process
+  smooth and convenient.
+</p>
+
+<h3>Our Features:</h3>
+
+<h5><a href="{% url 'index' %}">View Cars:</a></h5>
+<p>
+  Explore our extensive inventory of vehicles listed by our community of users.
+  From sleek sports cars to family-friendly SUVs, discover the perfect ride that
+  suits your style and needs.</p>
+</p>
+<h5><a href="{% url 'cars_create' %}">Post Cars:</a></h5> 
+<p>Ready to showcase your wheels to the world? List your car on Wheels
+and Deals in just a few simple steps. Share the unique features of your vehicle
+and attract potential buyers effortlessly.</p> 
+
+<h5>User Profiles:</h5> 
+<p>Dive deeper into the car community by exploring user profiles. Gain insights into their buying and
+selling history, ratings, and reviews from other users.</p> 
+
+<h5>Search Filters:</h5> 
+<p>Refine your search with our advanced filtering options. Narrow down your options by
+make, model, year, price range, and more to find the ideal car that matches your
+preferences.</p>
+
+<h3>How to Get Started: </h3>
+<h5><a href="{% url 'login' %}">Sign Up:</a></h5> 
+<p>Create your personalized account on Wheels and Deals using your email address.</p> 
+<h5>Browse Listings:</h5>
+<p>Begin your journey by exploring our diverse range of cars available for sale. Utilize our intuitive
+filters to tailor your search and find the best matches.</p> 
+<h5><a href="{% url 'cars_create' %}">List Your Car:</a></h5>
+<p>Ready to sell? List your car with detailed descriptions, captivating photos, and your
+desired price to attract potential buyers.</p> 
+Complete Transactions: Whether you're purchasing your dream car or finalizing a sale, rest assured that transactions
+on Wheels and Deals are secure. Leave feedback and reviews to contribute to our
+trustworthy community.</p> 
+<h5>Feedback and Support:</h5>
+<p>We value your input! If you have any questions, suggestions, or encounter any issues while using Wheels and
+Deals, our dedicated support team is here to assist you every step of the way.
+Your satisfaction is our top priority.</p> 
+
+<h4>Join us on Wheels and Deals</h4>
+<h5>Where every ride leads to an exceptional deal! Happy buying and selling!</h5>
 <footer>All Rights Reserved, &copy; 2024 Wheels and Deals</footer>
 
 {% endblock %}
