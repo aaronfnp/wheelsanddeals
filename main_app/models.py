@@ -92,6 +92,7 @@ class Car(models.Model):
     date_listed = models.DateTimeField(default=timezone.now)
     published_by = models.ForeignKey(User, on_delete=models.CASCADE)
     color = models.CharField(max_length=100)
+    sold = models.BooleanField(default=False)
     price = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999999)])
     category = models.CharField(
         max_length=100,
