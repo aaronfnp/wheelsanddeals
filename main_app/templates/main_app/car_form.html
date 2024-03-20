@@ -14,4 +14,15 @@
   <input type="submit" value="Submit!" class="btn" />
 </form>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectEl = document.getElementById("id_make");
+    M.FormSelect.init(selectEl);
+    const selectEl2 = document.getElementById("id_condition");
+    M.FormSelect.init(selectEl2);
+    const selectEl3 = document.getElementById("id_category");
+    M.FormSelect.init(selectEl3);
+  });
+</script>
+
 {% endblock %}

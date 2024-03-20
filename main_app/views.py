@@ -65,7 +65,7 @@ def add_photo(request, car_id):
 
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Car
-    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'date_listed', 'color', 'price', 'category']
+    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
     success_url = '/cars'
 
     def form_valid(self, form):
@@ -74,7 +74,7 @@ class CarCreate(LoginRequiredMixin, CreateView):
 
 class CarUpdate(UpdateView):
     model = Car
-    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'date_listed', 'color', 'price', 'category']
+    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
     success_url = '/cars'
     
 class CarDelete(DeleteView):
