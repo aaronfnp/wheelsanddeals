@@ -1,6 +1,11 @@
 from django.urls import path
 from . import views
+from .views import profile, ChangePasswordView
 from django.shortcuts import render
+from django.conf import settings
+from django.conf.urls.static import static
+# from users.views import ChangePasswordView
+
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,4 +22,6 @@ urlpatterns = [
     path('cars/<int:car_id>/add_to_favorites/', views.add_to_favorites, name='add_to_favorites'),
     path('my_garage/createreview/', views.ReviewCreate.as_view(), name='reviews_create'),
     path('accounts/signup/', views.signup, name='signup'),
-]
+    path('profile/', profile, name='users-profile'),
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

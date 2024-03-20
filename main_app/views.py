@@ -1,14 +1,19 @@
-import uuid
-import boto3
-import os
+import uuid, boto3, os
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from .models import Car, Photo, Profile, Review
 from django import forms
+from .forms import UpdateUserForm, UpdateProfileForm
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 # Define the home view
 def home(request):
@@ -137,3 +142,26 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile is updated successfully')
+            return redirect(to='users-profile')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'users/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('users-profile')

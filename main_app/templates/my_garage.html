@@ -1,13 +1,8 @@
 {% extends 'base.html' %} {% block content %}
 
+<h4>Active Listings</h4>
+{% if active_listings %}
 <div>
-  <div>
-    <div>
-      <h4>Active Listings</h4>
-    </div>
-    <div>
-      {% if active_listings %}
-      <div>
         {% for car in active_listings %}
         <div>
           <div class="card">
@@ -25,9 +20,9 @@
       {% endif %}
     </div>
   </div>
-  <div>
-    <div>
-      <h4>Sold Vehicles</h4>
+
+
+    <h4>Sold Vehicles</h4>
     </div>
     <div>
       {% if sold_history %}
@@ -102,4 +97,3 @@
   </div>
 
   {% endblock %}
-</div>
