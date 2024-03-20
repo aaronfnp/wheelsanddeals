@@ -91,8 +91,8 @@ def car_market(request):
 
 def my_garage(request):
     user = request.user
-    active_listings = Car.objects.filter(published_by=user)
-    sold_history = Car.objects.filter(published_by=user)
+    active_listings = Car.objects.filter(published_by=user, sold=False)
+    sold_history = Car.objects.filter(published_by=user, sold=True)
     reviews = Review.objects.filter(user_receiver=user)
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()

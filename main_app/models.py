@@ -19,6 +19,7 @@ class Car(models.Model):
     color = models.CharField(max_length=100)
     price = models.FloatField()
     category = models.CharField(max_length=100)
+    sold = models.BooleanField(default=False)
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
