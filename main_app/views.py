@@ -7,8 +7,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from .models import Car, Photo, Profile, Review
+from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
+from .forms import CarForm
 
 # Define the home view
 def home(request):
@@ -137,3 +138,13 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
+# Assuming you have a view like this
+def car_list(request):
+    car_by_category = {}
+    for cat1, cat2 in CATEGORY:
+        car_by_category[cat2] = Car.objects.filter(category=cat2)
+    car_by_category = car_by_category.items()
+    print ("categories", car_by_category)
+    return render(request, 'cars/index.html', {'car_by_category': car_by_category})
+
