@@ -16,4 +16,5 @@ urlpatterns = [
     path('my_garage/', views.my_garage, name='my_garage'),
     path('cars/<int:car_id>/add_to_favorites/', views.add_to_favorites, name='add_to_favorites'),
     path('my_garage/createreview/', views.ReviewCreate.as_view(), name='reviews_create'),
+    path('accounts/signup/', views.signup, name='signup'),
 ]
