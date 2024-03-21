@@ -7,21 +7,28 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
 from .forms import UpdateUserForm, UpdateProfileForm, CarForm
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
 
 
 # Define the home view
 def home(request):
-  cars = Car.objects.all()
-  cars_to_display = cars[len(cars)-4:]
-  return render(request, 'home.html', {
-    'cars': cars_to_display
-  })
+    cars = Car.objects.all()
+    if len(cars) >= 4:
+        cars_to_display = cars[len(cars)-4:]
+    elif cars:
+        cars_to_display = cars 
+    else:
+        cars_to_display = []
+    return render(request, 'home.html', {
+        'cars': cars_to_display
+    })
 
 def about(request):
   # Include an .html file extension - unlike when rendering EJS templates
@@ -47,6 +54,7 @@ def cars_detail(request, car_id):
     'car': car
   })
 
+@login_required
 def add_photo(request, car_id):
     # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get('photo-file', None)
@@ -90,25 +98,34 @@ class CarCreate(LoginRequiredMixin, CreateView):
         form.instance.published_by = self.request.user
         return super().form_valid(form)
 
-class CarUpdate(UpdateView):
+class CarUpdate(LoginRequiredMixin, UpdateView):
     model = Car
-    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
+    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category', 'sold']
     success_url = '/cars/categories/'
-    
-class CarDelete(DeleteView):
-    model = Car
-    success_url = '/cars'
 
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        form.fields['sold'].required = False
+        return form
+    
+class CarDelete(LoginRequiredMixin, DeleteView):
+    model = Car
+    success_url = '/cars/categories/'
+
+@login_required
 def add_listing(request):
     return render(request, 'add_listing.html')
 
 def car_market(request):
     return render(request, 'car_market.html')
 
+@login_required
 def my_garage(request):
     user = request.user
-    active_listings = Car.objects.filter(published_by=user)
-    sold_history = Car.objects.filter(published_by=user)
+    active_listings = Car.objects.filter(published_by=user, sold="For Sale")
+    sold_history = Car.objects.filter(
+        Q(published_by=user, sold="Sold") | Q(published_by=user, sold="Reserved")
+    )
     reviews = Review.objects.filter(user_receiver=user)
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()
@@ -120,6 +137,7 @@ def my_garage(request):
         'reviews' : reviews,
     })
 
+@login_required
 def add_to_favorites(request, car_id):
     car = Car.objects.get(id=car_id)
     profile = Profile.objects.get(user=request.user)
