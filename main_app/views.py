@@ -14,8 +14,10 @@ from .forms import CarForm
 # Define the home view
 def home(request):
     cars = Car.objects.all()
-    if cars:
+    if len(cars) >= 4:
         cars_to_display = cars[len(cars)-4:]
+    elif cars:
+        cars_to_display = cars 
     else:
         cars_to_display = []
     return render(request, 'home.html', {
