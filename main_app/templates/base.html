@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,8 +12,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
+  </head>
   <body>
     <header class="navbar-fixed">
       <nav>
@@ -28,8 +28,9 @@
             <li><a href="{% url 'about' %}">About</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'cars_create' %}">add listing</a></li>
-            <li><a href="{% url 'car_list' %}">car market</a></li>
+            <li><a href="{% url 'index' %}">car market</a></li>
             <li><a href="/my_garage">my garage</a></li>
+            <!-- <li><a href="{% url 'users-profile' %}">my profile</a></li> -->
             <li>
               <a href="#">
                 <form method="post" action="{% url 'logout' %}">

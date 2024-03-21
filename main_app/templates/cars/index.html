@@ -2,12 +2,6 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Car Listings</title>
-  </head>
-  <body>
     <h1>Car Listings</h1>
     {% for category, cars in car_by_category %}
       <h2>{{ category }}</h2>
@@ -19,7 +13,25 @@
         {% endfor %}
       </ul>
     {% endfor %}
-  </body>
-</html>
 
-{% endblock %}
+    
+    <h1>Garages</h1>
+    {% for profile in profiles %}
+    <li>
+    <img src="{{ profile.image.url }}">
+    </li>
+    <li>
+      <a href="{% url 'my_garage' user.id %}">
+      </li>
+    {% endfor %} 
+
+
+<img src="{{ profile.avatar.url }}"> <h3>{{ profile.user }}</h3>
+{{ profile.bio }}
+
+</br>
+</br>
+
+
+
+  {% endblock %}

@@ -1,17 +1,21 @@
-import uuid
-import boto3
-import os
+import uuid, boto3, os
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
-from .forms import CarForm
+from .forms import UpdateUserForm, UpdateProfileForm, CarForm
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
+
 
 # Define the home view
 def home(request):
@@ -35,6 +39,14 @@ def cars_index(request):
   return render(request, 'cars/index.html', {
     'cars': cars
   })
+
+def car_list(request):
+    car_by_category = {}
+    for cat1, cat2 in CATEGORY:
+        car_by_category[cat2] = Car.objects.filter(category=cat2)
+    car_by_category = car_by_category.items()
+    print ("categories", car_by_category)
+    return render(request, 'cars/index.html', {'car_by_category': car_by_category})
 
 def cars_detail(request, car_id):
   car = Car.objects.get(id=car_id)
@@ -118,6 +130,7 @@ def my_garage(request):
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()
     return render(request, 'my_garage.html', {
+        'profile': profile,
         'active_listings': active_listings,
         'sold_history': sold_history,
         'favorite_cars': favorite_cars,
@@ -160,12 +173,24 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
-# Assuming you have a view like this
-def car_list(request):
-    car_by_category = {}
-    for cat1, cat2 in CATEGORY:
-        car_by_category[cat2] = Car.objects.filter(category=cat2)
-    car_by_category = car_by_category.items()
-    print ("categories", car_by_category)
-    return render(request, 'cars/index.html', {'car_by_category': car_by_category})
 
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile is updated successfully')
+            return redirect(to='users-profile')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'users/change_password.html'
+    success_url = reverse_lazy('users-profile')
