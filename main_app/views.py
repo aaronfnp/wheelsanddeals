@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
 from .forms import CarForm
@@ -41,6 +42,7 @@ def cars_detail(request, car_id):
     'car': car
   })
 
+@login_required
 def add_photo(request, car_id):
     # photo-file will be the "name" attribute on the <input type="file">
     photo_file = request.FILES.get('photo-file', None)
@@ -84,7 +86,7 @@ class CarCreate(LoginRequiredMixin, CreateView):
         form.instance.published_by = self.request.user
         return super().form_valid(form)
 
-class CarUpdate(UpdateView):
+class CarUpdate(LoginRequiredMixin, UpdateView):
     model = Car
     fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category', 'sold']
     success_url = '/cars/categories/'
@@ -94,16 +96,18 @@ class CarUpdate(UpdateView):
         form.fields['sold'].required = False
         return form
     
-class CarDelete(DeleteView):
+class CarDelete(LoginRequiredMixin, DeleteView):
     model = Car
     success_url = '/cars/categories/'
 
+@login_required
 def add_listing(request):
     return render(request, 'add_listing.html')
 
 def car_market(request):
     return render(request, 'car_market.html')
 
+@login_required
 def my_garage(request):
     user = request.user
     active_listings = Car.objects.filter(published_by=user, sold="For Sale")
@@ -120,6 +124,7 @@ def my_garage(request):
         'reviews' : reviews,
     })
 
+@login_required
 def add_to_favorites(request, car_id):
     car = Car.objects.get(id=car_id)
     profile = Profile.objects.get(user=request.user)
