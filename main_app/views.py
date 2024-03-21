@@ -13,11 +13,14 @@ from .forms import CarForm
 
 # Define the home view
 def home(request):
-  cars = Car.objects.all()
-  cars_to_display = cars[len(cars)-4:]
-  return render(request, 'home.html', {
-    'cars': cars_to_display
-  })
+    cars = Car.objects.all()
+    if cars:
+        cars_to_display = cars[len(cars)-4:]
+    else:
+        cars_to_display = []
+    return render(request, 'home.html', {
+        'cars': cars_to_display
+    })
 
 def about(request):
   # Include an .html file extension - unlike when rendering EJS templates
