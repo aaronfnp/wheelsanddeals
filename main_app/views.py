@@ -30,6 +30,14 @@ def cars_index(request):
     'cars': cars
   })
 
+def car_list(request):
+    car_by_category = {}
+    for cat1, cat2 in CATEGORY:
+        car_by_category[cat2] = Car.objects.filter(category=cat2)
+    car_by_category = car_by_category.items()
+    print ("categories", car_by_category)
+    return render(request, 'cars/index.html', {'car_by_category': car_by_category})
+
 def cars_detail(request, car_id):
   car = Car.objects.get(id=car_id)
   return render(request, 'cars/detail.html', {
@@ -96,8 +104,8 @@ def car_market(request):
 
 def my_garage(request):
     user = request.user
-    active_listings = Car.objects.filter(published_by=user, sold=False)
-    sold_history = Car.objects.filter(published_by=user, sold=True)
+    active_listings = Car.objects.filter(published_by=user)
+    sold_history = Car.objects.filter(published_by=user)
     reviews = Review.objects.filter(user_receiver=user)
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()
@@ -143,13 +151,6 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
-def car_list(request):
-    car_by_category = {}
-    for cat1, cat2 in CATEGORY:
-        car_by_category[cat2] = Car.objects.filter(category=cat2)
-    car_by_category = car_by_category.items()
-    print ("categories", car_by_category)
-    return render(request, 'cars/index.html', {'car_by_category': car_by_category})
 
 @login_required
 def profile(request):
@@ -170,5 +171,4 @@ def profile(request):
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'users/change_password.html'
-    success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('users-profile')
