@@ -85,7 +85,7 @@ class CarUpdate(UpdateView):
     
 class CarDelete(DeleteView):
     model = Car
-    success_url = '/cars'
+    success_url = '/cars/categories/'
 
 def add_listing(request):
     return render(request, 'add_listing.html')
