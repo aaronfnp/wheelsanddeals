@@ -13,8 +13,11 @@ from .forms import CarForm
 
 # Define the home view
 def home(request):
-  # Include an .html file extension - unlike when rendering EJS templates
-  return render(request, 'home.html')
+  cars = Car.objects.all()
+  cars_to_display = cars[len(cars)-4:]
+  return render(request, 'home.html', {
+    'cars': cars_to_display
+  })
 
 def about(request):
   # Include an .html file extension - unlike when rendering EJS templates
@@ -69,7 +72,7 @@ def add_photo(request, car_id):
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Car
     fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
-    success_url = '/cars'
+    success_url = '/cars/categories/'
 
     def form_valid(self, form):
         form.instance.published_by = self.request.user
@@ -78,7 +81,7 @@ class CarCreate(LoginRequiredMixin, CreateView):
 class CarUpdate(UpdateView):
     model = Car
     fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
-    success_url = '/cars'
+    success_url = '/cars/categories/'
     
 class CarDelete(DeleteView):
     model = Car
