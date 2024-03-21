@@ -7,9 +7,9 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import Car, Photo, Profile, Review
+from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
-from .forms import UpdateUserForm, UpdateProfileForm
+from .forms import UpdateUserForm, UpdateProfileForm, CarForm
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -96,8 +96,8 @@ def car_market(request):
 
 def my_garage(request):
     user = request.user
-    active_listings = Car.objects.filter(published_by=user)
-    sold_history = Car.objects.filter(published_by=user)
+    active_listings = Car.objects.filter(published_by=user, sold=False)
+    sold_history = Car.objects.filter(published_by=user, sold=True)
     reviews = Review.objects.filter(user_receiver=user)
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()
@@ -143,6 +143,13 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+def car_list(request):
+    car_by_category = {}
+    for cat1, cat2 in CATEGORY:
+        car_by_category[cat2] = Car.objects.filter(category=cat2)
+    car_by_category = car_by_category.items()
+    print ("categories", car_by_category)
+    return render(request, 'cars/index.html', {'car_by_category': car_by_category})
 
 @login_required
 def profile(request):
