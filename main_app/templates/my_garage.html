@@ -1,6 +1,12 @@
 {% extends 'base.html' %} {% block content %}
+</br>
+</br>
+<img src="{{ profile.avatar.url }}"> <h3>{{ profile.user }}</h3>
+<p>Bio: {{ profile.bio }}</p>
 
-<h4>Active Listings</h4>
+</br>
+</br>
+<h5>{{ profile.user }}'s Active Listings</h5>
 {% if active_listings %}
 <div>
         {% for car in active_listings %}
@@ -22,7 +28,7 @@
   </div>
 
 
-    <h4>Sold Vehicles</h4>
+    <h5>Sold Vehicles</h5>
     </div>
     <div>
       {% if sold_history %}
@@ -46,7 +52,7 @@
   </div>
   <div>
     <div>
-      <h4>Favorite Cars</h4>
+      <h5>Favorite Cars</h5>
     </div>
     <div>
       {% if favorite_cars %}
@@ -69,7 +75,7 @@
     </div>
     <div>
       <div>
-        <h4>Reviews</h4>
+        <h5>Reviews</h5>
       </div>
       <div>
         {% if reviews %}

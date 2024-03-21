@@ -113,6 +113,7 @@ def my_garage(request):
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()
     return render(request, 'my_garage.html', {
+        'profile': profile,
         'active_listings': active_listings,
         'sold_history': sold_history,
         'favorite_cars': favorite_cars,
