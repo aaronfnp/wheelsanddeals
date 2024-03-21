@@ -1,51 +1,51 @@
 body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    background-color: rgb(233, 229, 229);
-  }
-  
-  main {
-    flex: 1 0 auto;
-  }
-  
-  footer.page-footer {
-    padding-top: 0;
-    text-align: right;
-    background-color: #424040;
-  }
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: rgb(233, 229, 229);
+}
 
-  .navbar-fixed {
-    background-color: #151B54;
-  }
-  
-  .navbar-fixed .brand-logo {
-    color: #fff;
-    font-size: 2rem;
-    font-weight: bold;
-    padding: 0 1rem;
-  }
-  
-  .navbar-fixed ul {
-    list-style-type: none;
-  }
-  
-  .navbar-fixed ul li a {
-    color: #fff;
-    padding: 0 1rem; 
-  }
-  
-  .navbar-fixed ul li a:hover {
-    background-color: #555;
-  }
+main {
+  flex: 1 0 auto;
+}
 
-  .nav-wrapper {
-    background-color: #87CEEB;
-  }
+footer.page-footer {
+  padding-top: 0;
+  text-align: right;
+  background-color: #424040;
+}
 
-  .card-title {
-    font-family: monospace;
-    color: rgb(5, 5, 5);
+.navbar-fixed {
+  background-color: #151b54;
+}
+
+.navbar-fixed .brand-logo {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 0 1rem;
+}
+
+.navbar-fixed ul {
+  list-style-type: none;
+}
+
+.navbar-fixed ul li a {
+  color: #fff;
+  padding: 0 1rem;
+}
+
+.navbar-fixed ul li a:hover {
+  background-color: #555;
+}
+
+.nav-wrapper {
+  background-color: #87ceeb;
+}
+
+.card-title {
+  font-family: monospace;
+  color: rgb(5, 5, 5);
 }
 
 .card {
@@ -71,4 +71,37 @@ body {
   width: calc(33.33% - 10px);
   margin-bottom: 20px;
 }
-  
+
+.photo-container {
+  display: inline-block;
+  width: 200px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.photo-wrap {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  height: 250px;
+}
+
+.photo-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(26, 120, 159, 0.7);
+  color: #fff;
+  visibility: hidden;
+  opacity: 0;
+  padding-left: 5px;
+  box-sizing: border-box;
+
+  transition: opacity 0.3s, visibility 0.5s;
+}
+
+.photo-wrap:hover .photo-description {
+  visibility: visible;
+  opacity: 1;
+}

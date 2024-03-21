@@ -1,6 +1,32 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
-<h1>HOME</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+  </head>
+  <body>
+    <h3>Welcome to Wheels and Deals!</h3>
+    <h5>Where Every Great Journey Begins with a Greater Deal</h5>
+    <p>If you're new here and want to know where to get started, please check out our <a href="{% url 'about' %}">About Page</a>.</p>
+    <p>If not, welcome back! Feel free to browse the newest listings below or head on back to your garage!</p>
+    <h4>Recent Listings</h4>
+    {% for car in cars %}
+        {% for photo in car.photo_set.all %}
+        <div class="photo-wrap">
+                <a href="{% url 'detail' car.id %}"><img class="photo-container" src="{{photo.url}}" /></a>
+                <div class="photo-description"> ${{ car.price }}<br>{{ car.year }} {{ car.make }} {{ car.model }}</div>
+                {% empty %}
+                <div class="teal-text center-align"><a href="{% url 'detail' car.id %}">{{ car.year }} {{ car.make }} {{ car.model }}</a></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </ul>
+  </body>
+</html>
+
+<script>
+
+</script>
 
 {% endblock %}
