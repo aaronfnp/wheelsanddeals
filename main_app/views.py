@@ -10,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
 from .forms import CarForm
+from django.db.models import Q
 
 # Define the home view
 def home(request):
@@ -85,8 +86,13 @@ class CarCreate(LoginRequiredMixin, CreateView):
 
 class CarUpdate(UpdateView):
     model = Car
-    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
+    fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category', 'sold']
     success_url = '/cars/categories/'
+
+    def get_form(self, *args, **kwargs):
+        form = super().get_form(*args, **kwargs)
+        form.fields['sold'].required = False
+        return form
     
 class CarDelete(DeleteView):
     model = Car
@@ -100,8 +106,10 @@ def car_market(request):
 
 def my_garage(request):
     user = request.user
-    active_listings = Car.objects.filter(published_by=user, sold=False)
-    sold_history = Car.objects.filter(published_by=user, sold=True)
+    active_listings = Car.objects.filter(published_by=user, sold="For Sale")
+    sold_history = Car.objects.filter(
+        Q(published_by=user, sold="Sold") | Q(published_by=user, sold="Reserved")
+    )
     reviews = Review.objects.filter(user_receiver=user)
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()

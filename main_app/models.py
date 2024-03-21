@@ -74,6 +74,12 @@ CATEGORY = (
     ("Van", "Van")
 )
 
+SOLD = (
+    ("For Sale", "For Sale"),
+    ("Sold", "Sold"),
+    ("Reserved", "Reserved")
+)
+
 # Create your models here.
 
 class Car(models.Model):
@@ -92,7 +98,11 @@ class Car(models.Model):
     date_listed = models.DateTimeField(default=timezone.now)
     published_by = models.ForeignKey(User, on_delete=models.CASCADE)
     color = models.CharField(max_length=100)
-    sold = models.BooleanField(default=False)
+    sold = models.CharField(
+        max_length=100,
+        choices=SOLD,
+        default=SOLD[0][0]
+    )
     price = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999999)])
     category = models.CharField(
         max_length=100,
