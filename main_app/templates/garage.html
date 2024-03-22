@@ -1,6 +1,5 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- profile avatar link -->
 <div class="card-content">
   {% for avatar in user.avatar_set.all %}
   <img class="responsive-img card-panel" src="{{ avatar.url }}" />
@@ -20,11 +19,10 @@
   </form>
 
 
-<h3>{{ profile.user }}</h3>
+<h3>{{ profile.user}}</h3>
 <p>Bio: {{ profile.bio }}</p>
 <br/>
 <br/>
-<h5>{{ profile.user }}'s Active Listings</h5>
 
 <div>
   <div>
