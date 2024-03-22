@@ -38,13 +38,26 @@
       <div>
         {% for car in active_listings %}
         <div>
-          {% for photo in car.photo_set.all %}
-            <div class="photo-wrap">
-            <a href="{% url 'detail' car.id %}"><img class="photo-container" src="{{photo.url}}" /></a>
-            <div class="photo-description"> ${{ car.price }}<br>{{ car.year }} {{ car.make }} {{ car.model }}</div>
-          {% empty %}
-            <div class="teal-text center-align"><a href="{% url 'detail' car.id %}">{{ car.year }} {{ car.make }} {{ car.model }}</a></div>
-          {% endfor %}
+          <div class="photo-wrap">
+            <a href="{% url 'detail' car.id %}">
+              {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+              <img
+                class="photo-container"
+                src="{{ photo.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              {% endfor %} {% else %}
+              <img
+                class="photo-container"
+                src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+                alt="Default Image"
+              />
+              {% endif %}
+            </a>
+            <div class="photo-description">
+              ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
+            </div>
+          </div>
         </div>
         {% endfor %}
       </div>
@@ -61,14 +74,27 @@
       {% if sold_history %}
       <div>
         {% for car in sold_history %}
-          {% for photo in car.photo_set.all %}
-            <div class="photo-wrap">
-            <a href="{% url 'detail' car.id %}"><img class="photo-container" src="{{photo.url}}" /></a>
-            <div class="photo-description"> ${{ car.price }}<br>{{ car.year }} {{ car.make }} {{ car.model }}</div>
-          {% empty %}
-            <div class="teal-text center-align"><a href="{% url 'detail' car.id %}">{{ car.year }} {{ car.make }} {{ car.model }}</a></div>
-          {% endfor %}
-        </div>
+        <div>
+          <div class="photo-wrap">
+            <a href="{% url 'detail' car.id %}">
+              {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+              <img
+                class="photo-container"
+                src="{{ photo.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              {% endfor %} {% else %}
+              <img
+                class="photo-container"
+                src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+                alt="Default Image"
+              />
+              {% endif %}
+            </a>
+            <div class="photo-description">
+              ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
+            </div>
+          </div>
         {% endfor %}
       </div>
       {% else %}
@@ -84,16 +110,28 @@
     <div>
       {% if favorite_cars %}
       <div>
-        {% for car in favorite_cars %}
+        {% for car in sold_history %}
         <div>
-          <div class="card">
+          <div class="photo-wrap">
             <a href="{% url 'detail' car.id %}">
-                <div class="card-content">
-                <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
+              {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+              <img
+                class="photo-container"
+                src="{{ photo.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              {% endfor %} {% else %}
+              <img
+                class="photo-container"
+                src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+                alt="Default Image"
+              />
+              {% endif %}
             </a>
+            <div class="photo-description">
+              ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
             </div>
           </div>
-        </div>
         {% endfor %}
       </div>
       {% else %}
