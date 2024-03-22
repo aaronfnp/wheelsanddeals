@@ -11,12 +11,21 @@
     <h1>Car Listings</h1>
     {% for category, cars in car_by_category %}
       <h2>{{ category }}</h2>
-      <h2 class="separated-h2">Avaible cars</h2>
+      <h2 class="separated-h2">Available cars</h2>
       <ul>
         {% for car in cars %}
-          <li>
-            <a href="{% url 'detail' car.id %}">{{ car.year }} {{ car.make }} {{ car.model }}</a>
-          </li>
+          {% if car.id %}
+            {% for photo in car.photo_set.all %}
+              <div class="photo-wrap">
+                <a href="{% url 'detail' car.id %}"><img class="photo-container" src="{{ photo.url }}" /></a>
+                <div class="photo-description"> ${{ car.price }}<br>{{ car.year }} {{ car.make }} {{ car.model }}</div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="teal-text center-align">No car ID provided</div>
+          {% endif %}
+        {% empty %}
+          <div class="teal-text center-align">No cars available</div>
         {% endfor %}
       </ul>
     {% endfor %}
