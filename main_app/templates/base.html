@@ -29,7 +29,7 @@
             {% if user.is_authenticated %}
             <li><a href="{% url 'cars_create' %}">add listing</a></li>
             <li><a href="{% url 'car_list' %}">car market</a></li>
-            <li><a href="/my_garage">my garage</a></li>
+            <li><a href="{% url 'garage' user.id %}">my garage</a></li>
             <li>
               <a href="#">
                 <form method="post" action="{% url 'logout' %}">

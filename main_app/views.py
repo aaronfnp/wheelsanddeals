@@ -12,6 +12,7 @@ from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
 from .forms import CarForm
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 # Define the home view
 def home(request):
@@ -108,8 +109,8 @@ def car_market(request):
     return render(request, 'car_market.html')
 
 @login_required
-def my_garage(request):
-    user = request.user
+def garage(request, user_id):
+    user = User.objects.get(id=user_id) 
     active_listings = Car.objects.filter(published_by=user, sold="For Sale")
     sold_history = Car.objects.filter(
         Q(published_by=user, sold="Sold") | Q(published_by=user, sold="Reserved")
@@ -117,12 +118,39 @@ def my_garage(request):
     reviews = Review.objects.filter(user_receiver=user)
     profile = Profile.objects.get(user=user)
     favorite_cars = profile.favorite_cars.all()
-    return render(request, 'my_garage.html', {
+    return render(request, 'garage.html', {
+        # avatar render
+        'profile': profile,
+        'user': user,
         'active_listings': active_listings,
         'sold_history': sold_history,
         'favorite_cars': favorite_cars,
         'reviews' : reviews,
     })
+
+@login_required
+def add_avatar(request, user_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            bucket = os.environ['S3_BUCKET']
+            s3.upload_fileobj(photo_file, bucket, key)
+            # build the full url string
+            url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
+            # we can assign to cat_id or cat (if you have a cat object)
+            Photo.objects.create(url=url, user_id=user_id)
+        except Exception as e:
+            print('An error occurred uploading file to S3')
+            print(e)
+    return redirect('garage', user_id=user_id)
+
+
+
 
 @login_required
 def add_to_favorites(request, car_id):

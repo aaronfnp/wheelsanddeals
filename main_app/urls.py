@@ -13,9 +13,10 @@ urlpatterns = [
     path('cars/<int:car_id>/add_photo/', views.add_photo, name='add_photo'),
     path('add_listing/', views.add_listing, name='add_listing'),
     path('car_market/', views.car_market, name='car_market'),
-    path('my_garage/', views.my_garage, name='my_garage'),
+    path('garage/<int:user_id>', views.garage, name='garage'),
+    path('garage/<int:user_id>/add_avatar/', views.add_avatar, name='add_avatar'),
     path('cars/<int:car_id>/add_to_favorites/', views.add_to_favorites, name='add_to_favorites'),
-    path('my_garage/createreview/', views.ReviewCreate.as_view(), name='reviews_create'),
+    path('garage/createreview/', views.ReviewCreate.as_view(), name='reviews_create'),
     path('accounts/signup/', views.signup, name='signup'),
     path('cars/categories/', views.car_list, name='car_list'), 
 ]

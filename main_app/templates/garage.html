@@ -1,5 +1,31 @@
 {% extends 'base.html' %} {% block content %}
 
+<!-- profile avatar link -->
+<div class="card-content">
+  {% for avatar in user.avatar_set.all %}
+  <img class="responsive-img card-panel" src="{{ avatar.url }}" />
+  {% empty %}
+  <div class="card-panel teal-text center-align">No Photos Uploaded</div>
+  {% endfor %}
+  <form
+    action="{% url 'add_avatar' user.id %}"
+    enctype="multipart/form-data"
+    method="POST"
+    class="card-panel"
+  >
+    {% csrf_token %}
+    <input type="file" name="photo-file" />
+    <br /><br />
+    <button type="submit" class="btn">Upload Photo</button>
+  </form>
+
+
+<h3>{{ profile.user }}</h3>
+<p>Bio: {{ profile.bio }}</p>
+<br/>
+<br/>
+<h5>{{ profile.user }}'s Active Listings</h5>
+
 <div>
   <div>
     <div>
