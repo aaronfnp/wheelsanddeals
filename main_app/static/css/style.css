@@ -105,3 +105,57 @@ footer.page-footer {
   visibility: visible;
   opacity: 1;
 }
+
+h1 { 
+  font-family: "Rockwell Extra Bold", "Rockwell Bold", monospace; 
+  font-size: 48px; 
+  font-style: normal; 
+  font-variant: normal; 
+  font-weight: 700; 
+  line-height: 26.4px; 
+} 
+
+.separated-h2 {
+  font-family: "Brush Script MT", cursive;
+  font-size: 24px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 26.4px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.separated-h2::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #058fff;
+  font-size: 1.5rem;
+  font-family: Geneva, Tahoma, Verdana, sans-serif; 
+  font-style: italic; 
+  font-variant: normal; 
+  font-weight: 400; 
+}
+
+a:hover {
+  text-decoration: underline;
+}

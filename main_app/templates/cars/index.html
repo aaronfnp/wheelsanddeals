@@ -11,6 +11,7 @@
     <h1>Car Listings</h1>
     {% for category, cars in car_by_category %}
       <h2>{{ category }}</h2>
+      <h2 class="separated-h2">Avaible cars</h2>
       <ul>
         {% for car in cars %}
           <li>
