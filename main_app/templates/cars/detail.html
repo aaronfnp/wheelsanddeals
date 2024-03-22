@@ -31,6 +31,10 @@
     <p>Color: {{ car.color }}</p>
     <p>Price: ${{ car.price }}</p>
     <p>Category: {{ car.category }}</p>
+    <p>
+      Posted By:
+      <a href="{% url 'garage' car.published_by.id %}">{{car.published_by}}</a>
+    </p>
   </div>
 
   {% if user == car.published_by %}
