@@ -8,9 +8,9 @@
     <title>Car Listings</title>
   </head>
   <body>
-    <h1>Car Listings</h1>
+    <h3>Car Listings</h3>
     {% for category, cars in car_by_category %}
-      <h2>{{ category }}</h2>
+      <h4>{{ category }}</h4>
       <ul>
         {% for car in cars %}
           <li>
@@ -19,6 +19,17 @@
         {% endfor %}
       </ul>
     {% endfor %}
+
+
+        <h4>Virtual Garages</h4>
+        <ul>
+          {% for profile in profiles %}
+            <li> 
+              <a href="{% url 'garage' .user.id %}">{{ profile.user.id }}</a> 
+            </li>
+          {% endfor %}
+        </ul>
+
   </body>
 </html>
 

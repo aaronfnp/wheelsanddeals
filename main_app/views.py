@@ -128,6 +128,13 @@ def garage(request, user_id):
         'reviews' : reviews,
     })
 
+def garage_index(request):
+    profile = Profile.objects.all()
+    return render(request, 'index.html', {
+        'profile': profile,
+    })
+
+
 @login_required
 def add_avatar(request, user_id):
     # photo-file will be the "name" attribute on the <input type="file">

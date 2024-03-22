@@ -132,6 +132,11 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     favorite_cars = models.ManyToManyField(Car, blank=True)
     
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+        ]
+    
     def __str__(self):
         return self.user.username
     
