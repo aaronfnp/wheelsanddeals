@@ -2,17 +2,18 @@ import uuid
 import boto3
 import os
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Car, Photo, Profile, Review, CATEGORY
 from django import forms
 from .forms import CarForm
 from django.db.models import Q
-from django.contrib.auth.models import User
+from django.urls import reverse_lazy
 
 # Define the home view
 def home(request):
@@ -39,8 +40,10 @@ def cars_index(request):
 
 def cars_detail(request, car_id):
   car = Car.objects.get(id=car_id)
+  user = request.user
   return render(request, 'cars/detail.html', {
-    'car': car
+    'car': car,
+    'user': user
   })
 
 @login_required
@@ -110,6 +113,7 @@ def car_market(request):
 
 @login_required
 def garage(request, user_id):
+    viewer = request.user
     user = User.objects.get(id=user_id) 
     active_listings = Car.objects.filter(published_by=user, sold="For Sale")
     sold_history = Car.objects.filter(
@@ -120,6 +124,7 @@ def garage(request, user_id):
     favorite_cars = profile.favorite_cars.all()
     return render(request, 'garage.html', {
         # avatar render
+        'viewer': viewer,
         'profile': profile,
         'user': user,
         'active_listings': active_listings,
@@ -161,13 +166,20 @@ def add_to_favorites(request, car_id):
 
 class ReviewCreate(LoginRequiredMixin, CreateView):
     model = Review
-    fields = ['rating', 'content', 'user_receiver']
-    success_url = '/my_garage'
+    fields = ['rating', 'content']
+    success_url = None
 
     def form_valid(self, form):
         form.instance.user_sender = self.request.user
+        user_id = self.kwargs['user_id']
+        user_receiver = get_object_or_404(User, pk=user_id)
+        form.instance.user_receiver = user_receiver
         # THIS NEEDS RECEIVING USER AS WELL ONCE PROFILE HAS
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        # get the original path without 'createreview' part
+        return reverse_lazy('garage', kwargs={'user_id': self.kwargs['user_id']})
     
 def signup(request):
     error_message = ''

@@ -53,11 +53,12 @@ footer.page-footer {
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
-  width: 400px;
+  max-width: 400px;
 }
 
 .card-content {
   text-align: center;
+  max-width: 100%;
 }
 
 .row {
@@ -106,14 +107,14 @@ footer.page-footer {
   opacity: 1;
 }
 
-h1 { 
-  font-family: "Rockwell Extra Bold", "Rockwell Bold", monospace; 
-  font-size: 48px; 
-  font-style: normal; 
-  font-variant: normal; 
-  font-weight: 700; 
-  line-height: 26.4px; 
-} 
+h1 {
+  font-family: "Rockwell Extra Bold", "Rockwell Bold", monospace;
+  font-size: 48px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 700;
+  line-height: 26.4px;
+}
 
 .separated-h2 {
   font-family: "Brush Script MT", cursive;
@@ -150,13 +151,29 @@ a {
   text-decoration: none;
   color: #058fff;
   font-size: 1.5rem;
-  font-family: Geneva, Tahoma, Verdana, sans-serif; 
-  font-style: italic; 
-  font-variant: normal; 
-  font-weight: 400; 
+  font-family: Geneva, Tahoma, Verdana, sans-serif;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: 400;
 }
 
 a:hover {
   text-decoration: underline;
 }
 
+.profile-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.reviews-wrapper {
+  max-width: 100%;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.review-card {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
