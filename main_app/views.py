@@ -67,20 +67,6 @@ def add_photo(request, car_id):
             print(e)
     return redirect('detail', car_id=car_id)
 
-# WENT WITH CLASS BASED VIEW
-# def add_review(request, profile_id):
-#     form = ReviewForm(request.POST)
-#     # all user_id will probably be profile id
-#     if form.is_valid():
-#         new_review = form.save(commit=False)
-#         new_review.user_receiver = profile_id
-#         new_review.user_sender = request.user
-#         new_review.save()
-#     # must return to user prof
-#     return redirect('detail', profile_id=profile_id)
-
-# CARS CREATE AND UPDATE NEED TO REMOVE USER AND AUTO ADD
-
 class CarCreate(LoginRequiredMixin, CreateView):
     model = Car
     fields = ['make', 'model', 'year', 'milage', 'previous_owners', 'condition', 'color', 'price', 'category']
@@ -103,13 +89,6 @@ class CarUpdate(LoginRequiredMixin, UpdateView):
 class CarDelete(LoginRequiredMixin, DeleteView):
     model = Car
     success_url = '/cars/categories/'
-
-@login_required
-def add_listing(request):
-    return render(request, 'add_listing.html')
-
-def car_market(request):
-    return render(request, 'car_market.html')
 
 @login_required
 def garage(request, user_id):
@@ -147,15 +126,11 @@ def add_avatar(request, user_id):
             s3.upload_fileobj(photo_file, bucket, key)
             # build the full url string
             url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
-            # we can assign to cat_id or cat (if you have a cat object)
             Photo.objects.create(url=url, user_id=user_id)
         except Exception as e:
             print('An error occurred uploading file to S3')
             print(e)
     return redirect('garage', user_id=user_id)
-
-
-
 
 @login_required
 def add_to_favorites(request, car_id):
@@ -175,7 +150,6 @@ class ReviewCreate(LoginRequiredMixin, CreateView):
         user_id = self.kwargs['user_id']
         user_receiver = get_object_or_404(User, pk=user_id)
         form.instance.user_receiver = user_receiver
-        # THIS NEEDS RECEIVING USER AS WELL ONCE PROFILE HAS
         return super().form_valid(form)
     
     def get_success_url(self):
