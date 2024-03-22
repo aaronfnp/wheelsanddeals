@@ -123,7 +123,7 @@ class Photo(models.Model):
 
 class Avatar(models.Model):
     url = models.CharField(max_length=200)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Avatar for user_id: {self.user_id} @{self.url}"
@@ -141,15 +141,13 @@ class Profile(models.Model):
         return self.user.username
     
 class Review(models.Model):
-    # should grab current logged in user
-    user_sender = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sent_reviews')
-    # should grab current user profile
-    user_receiver = models.OneToOneField(User, on_delete=models.CASCADE, related_name='received_reviews')
+    user_sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_reviews')
+    user_receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_reviews')
     content = models.CharField(max_length=100)
     rating = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def __str__(self):
-        return f'{self.content})'
-    
+        return f'{self.content}'
+
     def get_absolute_url(self):
         return reverse('detail', kwargs={'review_id': self.id})

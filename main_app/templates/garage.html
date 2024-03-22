@@ -1,27 +1,28 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- profile avatar link -->
-<div class="card-content">
-  {% for avatar in user.avatar_set.all %}
-  <img class="responsive-img card-panel" src="{{ avatar.url }}" />
-  {% empty %}
-  <div class="card-panel teal-text center-align">No Photos Uploaded</div>
-  {% endfor %}
-  <form
-    action="{% url 'add_avatar' user.id %}"
-    enctype="multipart/form-data"
-    method="POST"
-    class="card-panel"
-  >
-    {% csrf_token %}
-    <input type="file" name="photo-file" />
-    <br /><br />
-    <button type="submit" class="btn">Upload Photo</button>
-  </form>
+<div class="profile-wrapper card">
+  <div class="card-content">
+    {% if user.avatar %}
+      <img class="responsive-img card-panel" src="{{ user.avatar.url }}" />
+    {% else %}
+      <div class="card-panel teal-text center-align">No Avatar Uploaded</div>
+      {% if viewer == user %}
+      <form
+        action="{% url 'add_avatar' user.id %}"
+        enctype="multipart/form-data"
+        method="POST"
+        class="card-panel"
+      >
+        {% csrf_token %}
+        <input type="file" name="photo-file" />
+        <br /><br />
+        <button type="submit" class="btn">Upload Photo</button>
+      </form>
+      {% endif %}
+    {% endif %}
 
 
 <h3>{{ profile.user }}</h3>
-<p>Bio: {{ profile.bio }}</p>
 <br/>
 <br/>
 <h5>{{ profile.user }}'s Active Listings</h5>
@@ -36,11 +37,24 @@
       <div>
         {% for car in active_listings %}
         <div>
-          <div class="card">
+          <div class="photo-wrap">
             <a href="{% url 'detail' car.id %}">
-            <div class="card-content">
-              <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
-            </a>  
+              {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+              <img
+                class="photo-container"
+                src="{{ photo.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              {% endfor %} {% else %}
+              <img
+                class="photo-container"
+                src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+                alt="Default Image"
+              />
+              {% endif %}
+            </a>
+            <div class="photo-description">
+              ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
             </div>
           </div>
         </div>
@@ -60,14 +74,26 @@
       <div>
         {% for car in sold_history %}
         <div>
-          <div class="card">
+          <div class="photo-wrap">
             <a href="{% url 'detail' car.id %}">
-            <div class="card-content">
-              <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
+              {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+              <img
+                class="photo-container"
+                src="{{ photo.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              {% endfor %} {% else %}
+              <img
+                class="photo-container"
+                src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+                alt="Default Image"
+              />
+              {% endif %}
             </a>
+            <div class="photo-description">
+              ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
             </div>
           </div>
-        </div>
         {% endfor %}
       </div>
       {% else %}
@@ -77,6 +103,7 @@
   </div>
   <div>
     <div>
+      {% if viewer == user %}
       <h4>Favorite Cars</h4>
     </div>
     <div>
@@ -84,48 +111,64 @@
       <div>
         {% for car in favorite_cars %}
         <div>
-          <div class="card">
+          <div class="photo-wrap">
             <a href="{% url 'detail' car.id %}">
-                <div class="card-content">
-                <span class="card-title">{{ car.year }} {{ car.make }} {{ car.model }}</span>
+              {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+              <img
+                class="photo-container"
+                src="{{ photo.url }}"
+                alt="{{ car.make }} {{ car.model }}"
+              />
+              {% endfor %} {% else %}
+              <img
+                class="photo-container"
+                src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+                alt="Default Image"
+              />
+              {% endif %}
             </a>
+            <div class="photo-description">
+              ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
             </div>
           </div>
-        </div>
         {% endfor %}
       </div>
       {% else %}
       <p>No Favorites Added</p>
       {% endif %}
     </div>
+    {% endif %}
     <div>
       <div>
         <h4>Reviews</h4>
-      </div>
-      <div>
-        {% if reviews %}
-        <div>
-          {% for review in reviews %}
-          <div>
-            <div class="card">
-              <div class="card-content">
-                <span class="card-title">
-                  Rating: {{ review.rating }} / 5
-                  <br />Review: {{ review.content }} <br />By:
-                  {{review.user_sender }}
-                </span>
-              </div>
-            </div>
           </div>
-          {% endfor %}
+          <div class="reviews-wrapper"> <!-- New class added -->
+            {% if reviews %}
+            <div>
+              {% for review in reviews %}
+              <div class="card review-card"> <!-- New class added -->
+                <div class="card-content">
+                  <span class="card-title">
+                    Rating: {{ review.rating }} / 5
+                    <br />Review: {{ review.content }} <br />By:
+                    {{review.user_sender }}
+                  </span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <p>No Reviews Added</p>
+            {% endif %}
+          </div>
+          {% if viewer != user %}
+          <a href="{% url 'reviews_create' user.id %}">Add Review</a>
+          {% endif %}
         </div>
-        {% else %}
-        <p>No Reviews Added</p>
-        {% endif %}
       </div>
-      <a href="{% url 'reviews_create' %}">Add Review</a>
     </div>
   </div>
+</div>
 
   {% endblock %}
 </div>

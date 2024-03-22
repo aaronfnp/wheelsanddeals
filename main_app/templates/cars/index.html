@@ -1,36 +1,36 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+<h1>Car Listings</h1>
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Car Listings</title>
-  </head>
-  <body>
-    <h3>Car Listings</h3>
-    {% for category, cars in car_by_category %}
-      <h4>{{ category }}</h4>
-      <ul>
-        {% for car in cars %}
-          <li>
-            <a href="{% url 'detail' car.id %}">{{ car.year }} {{ car.make }} {{ car.model }}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% endfor %}
-
-
-        <h4>Virtual Garages</h4>
-        <ul>
-          {% for profile in profiles %}
-            <li> 
-              <a href="{% url 'garage' .user.id %}">{{ profile.user.id }}</a> 
-            </li>
-          {% endfor %}
-        </ul>
-
-  </body>
-</html>
-
-{% endblock %}
+{% for category, cars in car_by_category %}
+<h2>{{ category }}</h2>
+<h2 class="separated-h2">Available cars</h2>
+<ul>
+  {% for car in cars %}
+  <li>
+    <div class="photo-wrap">
+      <a href="{% url 'detail' car.id %}">
+        {% if car.photo_set.all %} {% for photo in car.photo_set.all %}
+        <img
+          class="photo-container"
+          src="{{ photo.url }}"
+          alt="{{ car.make }} {{ car.model }}"
+        />
+        {% endfor %} {% else %}
+        <img
+          class="photo-container"
+          src="https://t4.ftcdn.net/jpg/05/35/34/75/360_F_535347529_D2ZywGJ14zEznC55REGvF6kOOuQYPMXs.jpg"
+          alt="Default Image"
+        />
+        {% endif %}
+      </a>
+      <div class="photo-description">
+        ${{ car.price }}<br />{{ car.year }} {{ car.make }} {{ car.model }}
+      </div>
+    </div>
+  </li>
+  {% empty %}
+  <div class="teal-text center-align">No cars available</div>
+  {% endfor %}
+</ul>
+{% endfor %} {% endblock %}
