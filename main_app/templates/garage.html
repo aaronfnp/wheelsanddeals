@@ -109,7 +109,7 @@
     <div>
       {% if favorite_cars %}
       <div>
-        {% for car in sold_history %}
+        {% for car in favorite_cars %}
         <div>
           <div class="photo-wrap">
             <a href="{% url 'detail' car.id %}">
