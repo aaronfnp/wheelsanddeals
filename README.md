@@ -23,7 +23,7 @@ Feedback and Support: We value your feedback! If you have any questions, suggest
 
 Happy buying and selling on Wheels and Deals - where every ride leads to a great deal!
 
-<h1> [🏎️💨Launch Wheels & Deals](https://wheelsanddeals-a88e628e58f3.herokuapp.com/) </h1>
+[🏎️💨Launch Wheels & Deals](https://wheelsanddeals-a88e628e58f3.herokuapp.com/)
 
 </br>
 
