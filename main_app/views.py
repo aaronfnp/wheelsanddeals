@@ -159,10 +159,11 @@ def add_avatar(request, user_id):
 
 @login_required
 def add_to_favorites(request, car_id):
-    car = Car.objects.get(id=car_id)
-    profile = Profile.objects.get(user=request.user)
-    profile.favorite_cars.add(car)
-    return redirect('index', car_id=car_id)
+    if request.method == 'POST':
+      car = Car.objects.get(id=car_id)
+      profile = Profile.objects.get(user=request.user)
+      profile.favorite_cars.add(car)
+    return redirect('detail', car_id=car_id)
 
 class ReviewCreate(LoginRequiredMixin, CreateView):
     model = Review

@@ -35,6 +35,17 @@
       Posted By:
       <a href="{% url 'garage' car.published_by.id %}">{{car.published_by}}</a>
     </p>
+    {% if user.is_authenticated %}
+      <div class="card-action">
+        <form action="{% url 'add_to_favorites' car.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn">Add To Favorites</button>
+        </form>
+        {% if car in user.profile.favorite_cars.all %}
+          <p>{{ car.year }} {{ car.make }} {{ car.model }} is in your favorites.</p>
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
 
   {% if user == car.published_by %}
